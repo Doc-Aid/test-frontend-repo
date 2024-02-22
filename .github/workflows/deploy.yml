@@ -15,8 +15,8 @@ jobs:
 
     - name: Build and Push Docker image
       run: |
-        docker build -t my-react-app .
-        docker save my-react-app | bzip2 | ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@your-ec2-instance-ip 'bunzip2 | docker load'
+        docker build -t doc-aid-frontend -f Dockerfile.dev .
+        docker save doc-aid-frontend | bzip2 | ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@your-ec2-instance-ip 'bunzip2 | docker load'
 
     - name: Restart Docker container
-      run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@your-ec2-instance-ip 'docker stop my-react-app-container || true && docker run -d --rm --name my-react-app-container -p 80:80 my-react-app'
+      run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@your-ec2-instance-ip 'docker stop doc-aid-frontend-container || true && docker run -d --rm --name doc-aid-frontend-container -p 80:80 doc-aid-frontend'
